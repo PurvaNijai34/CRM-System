@@ -9,13 +9,13 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import AdminLogin from "../pages/AdminLogin";
 
-import CustomerDashboard from "../pages/customer/CustomerDashboard";
+import CustomerDashboard from "../pages/Customer/CustomerDashboard";
 import CreateTicket from "../pages/Customer/CreateTicket";
 import MyTickets from "../pages/Customer/MyTickets";
 
-import AdminDashboard from "../pages/admin/AdminDashboard";
-import AllTickets from "../pages/admin/AllTickets";
-import TicketDetails from "../pages/admin/TicketDetails";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AllTickets from "../pages/Admin/AllTickets";
+import TicketDetails from "../pages/Admin/TicketDetails";
 
 const AppRoutes = () => {
   return (
