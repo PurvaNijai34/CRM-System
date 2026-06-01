@@ -14,6 +14,37 @@ export const registerUser = async (req, res) => {
       });
     }
 
+    // Name Validation
+    if (name.trim().length < 3) {
+      return res.status(400).json({
+        success: false,
+        message: "Name must be at least 3 characters long",
+      });
+    }
+
+    // Email Validation
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email format",
+      });
+    }
+
+    // Password Validation
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password must contain at least 6 characters, one uppercase letter, one lowercase letter and one number",
+      });
+    }
+
     const existingUser = await User.findOne({
       email,
     });
@@ -32,7 +63,7 @@ export const registerUser = async (req, res) => {
 
     const user = await User.create({
       name,
-      email,
+      email: email.toLowerCase(),
       password: hashedPassword,
       role: "customer",
     });
@@ -43,64 +74,6 @@ export const registerUser = async (req, res) => {
     );
 
     res.status(201).json({
-      success: true,
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-
-
-
-export const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Email and password are required",
-      });
-    }
-
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid credentials",
-      });
-    }
-
-    const isMatch = await bcrypt.compare(
-      password,
-      user.password
-    );
-
-    if (!isMatch) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid credentials",
-      });
-    }
-
-    const token = generateToken(
-      user._id,
-      user.role
-    );
-
-    res.status(200).json({
       success: true,
       token,
       user: {
