@@ -1,377 +1,179 @@
-# Finance Research Agent
+# Title : CRM System
 
-## Overview
+## 🌐 Live Demo  https://crm-system-neon-six.vercel.app/
 
-Finance Research Agent is an AI-powered financial assistant built using Mastra, PostgreSQL, Express.js, TypeScript, and Groq LLM.
+## 📑 Table of Contents
 
-The system ingests financial transactions, mutual fund data, and holdings into PostgreSQL and allows users to ask natural language finance questions.
+- [🔍 Overview](#overview)
+- [✨ Features](#features)
+- [🛠️ Tech Stack](#tech-stack)
+- [🗄️ Database Design](#database-design)
+- [📂 Project Structure](#project-structure)
+- [⚙️ Installation](#instalaltion)
+- [🔒 Environment Variables](#env)
+- [📷 Screenshot](#screenshot)
+- [👤 Author](#author)
 
-The Tara Finance Agent uses Mastra tools to query PostgreSQL and return accurate financial insights.
+<h2><a class="anchor" id="overview"> 🔍Overview</a></h2>
 
----
+A full-stack Support CRM System built using the MERN Stack with JWT Authentication and Role-Based Access Control.
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Architecture](#architecture)
-- [Environment Variables](#environment-variables)
-- [Installation](#installation)
-- [Database Setup](#database-setup)
-- [Data Ingestion](#data-ingestion)
-- [Run Mastra Studio](#run-mastra-studio)
-- [Run API Server](#run-api-server)
-- [API Endpoint](#api-endpoint)
-- [Evaluation](#evaluation)
-- [Supported Questions](#supported-questions)
-- [Sample Output](#sample-output)
-- [Deployment](#deployment)
-- [Future Improvements](#future-improvements)
-- [Author](#author)
+This application allows customers to create support tickets and enables administrators to manage, track, update, and resolve customer issues efficiently.
 
 ---
 
-# Features
+<h2><a class="anchor" id="features">✨ Features</a></h2>
 
-- AI Finance Agent (Tara)
-- Mastra Agent Framework
-- PostgreSQL Integration
-- Data Ingestion Pipeline
-- Spending Analysis
-- Merchant Spending Analysis
-- Category Breakdown Analysis
-- Monthly Spending Analysis
-- Portfolio Value Calculation
-- REST API Endpoint
-- Evaluation Script
-- Mastra Studio Support
-- Render Deployment Ready
+## 👤 Customer Features
+
+- Customer Registration
+- Customer Login
+- JWT Authentication
+- Create Support Tickets
+- View Own Tickets
+- Protected Routes
+- Secure Access Control
+
+🛠️ Admin Features
+
+- Admin Login
+- View All Tickets
+- Search Tickets
+- Filter Tickets by Status
+- View Ticket Details
+- Update Ticket Status
+- Add Internal Notes
+- Dashboard Statistics
+- Role-Based Authorization
 
 ---
 
-# Tech Stack
+<h2><a class="anchor" id="tech-stack"> 🛠️ Tech Stack</a></h2>
+
+## Frontend
+
+- React.js
+- Vite
+- Tailwind CSS
+- React Router
+- Axios
 
 ## Backend
 
 - Node.js
-- TypeScript
 - Express.js
-
-## AI Framework
-
-- Mastra
-
-## Database
-
-- PostgreSQL (Neon)
-
-## LLM
-
-- Groq (Llama 3.3 70B Versatile)
+- MongoDB
+- Mongoose
+- JWT Authentication
+- bcryptjs
 
 ---
 
-# Project Structure
+<h2><a class="anchor" id="database-design"> 🗄️ Database Design</a></h2>
 
-```text
-finance-research-agent/
+## User Collection
+```
+{ 
+    "_id": "ObjectId", 
+    "name": "Purva", 
+    "email": "purva@gmail.com", 
+    "password": "hashedPassword", 
+    "role": "customer" 
+}
+```
+
+## Tickets Collection
+
+```
+{ 
+    "ticketId": "TKT-001", 
+    "customerName": "Purva", 
+    "customerEmail": "purva@gmail.com", 
+    "subject": "Login Issue", 
+    "description": "Unable to login to the application",
+    "status": "Open", 
+    "createdBy": "userId",
+    "notes": [],
+    "createdAt": "timestamp", 
+    "updatedAt": "timestamp"
+}
+```
+<h2><a class="anchor" id="project-structure">📂 Project Structure</a></h2>
+
+```bash
+HabitZen-AI/
 │
-├── data/
-│
-├── scripts/
-│   ├── ingest.ts
-│   └── eval.ts
-│
-├── src/
-│   │
-│   ├── db/
-│   │   ├── connection.ts
-│   │   ├── createTables.ts
-│   │   └── schema.sql
-│   │
-│   ├── mastra/
-│   │   ├── agents/
-│   │   │   └── tara-agent.ts
-│   │   │
-│   │   ├── tools/
-│   │   │   └── finance-tool.ts
-│   │   │
-│   │   └── index.ts
-│   │
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
 │   ├── routes/
-│   │   └── askRoute.ts
-│   │
-│   ├── services/
-│   │   └── financeService.ts
-│   │
-│   ├── tools/
-│   │   ├── transactionTool.ts
-│   │   └── fundTool.ts
-│   │
-│   └── server.ts
+│   ├── utils/
+│   ├── package.json
+│   └── server.js
 │
-├── .env
-├── package.json
-├── README.md
-└── DESIGN.md
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── api/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── components/
+│   │
+│   └── package.json
+│
+└── README.md
+
 ```
 
----
+<h2><a class="anchor" id="installation">⚙️ Installation</a></h2>
 
-# Architecture
-
-```text
-User Question
-      │
-      ▼
-Express API (/ask)
-      │
-      ▼
-Tara Finance Agent
-      │
-      ▼
-Finance Tool
-      │
-      ▼
-Finance Service
-      │
-      ▼
-PostgreSQL Database
-      │
-      ▼
-Response Returned
-```
-
----
-
-# Environment Variables
-
-Create a `.env` file:
-
-```env
-APP_PORT=3000
-
-DATABASE_URL=your_postgresql_connection_string
-
-GROQ_API_KEY=your_groq_api_key
-
-DATA_DIR=./data/sample_a
-
-API_BASE_URL=http://localhost:3000/api
-```
-
----
-
-# Installation
-
-Clone repository:
+### 1. Clone Repository
 
 ```bash
-git clone https://github.com/PurvaNijai34/finance-research-agent.git
+git clone https://github.com/PurvaNijai34/CRM-System.git
 ```
 
-Move into project:
+### 2. Backend setup
+
+#### Go to Backend Folder
 
 ```bash
-cd finance-research-agent
-```
-
-Install dependencies:
-
-```bash
+cd backend
 npm install
-```
-
----
-
-# Database Setup
-
-Create tables:
-
-```bash
-npx tsx src/db/createTables.ts
-```
-
----
-
-# Data Ingestion
-
-Load default dataset:
-
-```bash
-npx tsx scripts/ingest.ts
-```
-
-Load custom dataset:
-
-```bash
-DATA_DIR=./data/sample_x npx tsx scripts/ingest.ts
-```
-
-Expected Output:
-
-```bash
-Transactions Inserted: XXX
-Funds Inserted: XXX
-NAV Records Inserted: XXX
-Holdings Inserted: XXX
-
-Data Ingestion Completed Successfully
-```
-
----
-
-# Run Mastra Studio
-
-```bash
-npm run dev
-```
-
----
-
-# Run API Server
-
-```bash
 npm run server
 ```
 
-API Base URL:
+### 3. Frontend setup
 
-```text
-http://localhost:3000
-```
-
-> **Note:** Use either `npm run dev` (Mastra Studio) or `npm run server` (Express API) depending on what you want to test.
-
----
-
-# API Endpoint
-
-## POST /ask
-
-### Request
-
-```json
-{
-  "question": "How much did I spend on food?"
-}
-```
-
-### Response
-
-```json
-{
-  "answer": "You spent ₹118770.47 on food."
-}
-```
-
----
-
-# Evaluation
-
-Run evaluation suite:
+#### Go to Frontend Folder
 
 ```bash
-npx tsx scripts/eval.ts
+cd frontend
+npm install
+npm run dev
 ```
 
-The evaluation script:
+<h2><a class="anchor" id="env">🔒 Environment Variables</a></h2>
 
-- Sends multiple questions to `/ask`
-- Validates responses
-- Prints pass/fail summary
-- Displays failed cases
+### 📁 Frontend (.env)
 
----
-
-# Supported Questions
-
-## Spending Analysis
-
-- How much did I spend on food?
-- How much did I spend on travel?
-- How much did I spend on health?
-- How much did I spend on groceries?
-- How much did I spend on transport?
-
-## Merchant Analysis
-
-- How much did I spend on Amazon?
-- How much did I spend using AMZN?
-- How much did I spend on Netflix?
-- How much did I spend at Apollo Pharmacy?
-
-## Portfolio Analysis
-
-- What is my portfolio value?
-
-## Expense Analysis
-
-- What was my biggest expense?
-
-## Monthly Analysis
-
-- How much did I spend in March 2025?
-
-## Category Analysis
-
-- Show category breakdown
-
-## No Data Cases
-
-- Do I have any rent data in April 2025?
-
----
-
-# Sample Output
-
-## Food Spending
-
-```text
-You spent ₹118770.47 on food.
+```bash
+VITE_API_URL=your_backend_url/api
 ```
 
-## Portfolio Value
+### 📁 Backend (.env)
 
-```text
-Your portfolio value is ₹119983.80.
+```bash
+PORT=5000
+MONGO_URI=your_mongodb_connection
+JWT_SECRET=your_jwt_secret
 ```
 
-## Biggest Expense
-
-```text
-Your biggest expense was ₹34774.89 at NEFT/RENT/HDFC on 3/3/2025.
-```
-
----
-
-# Deployment
-
-Application is deployed on Render.
-
-Production API:
-
-```text
-https://finance-research-agent-073i.onrender.com
-```
-
----
-
-# Future Improvements
-
-- Expense Forecasting
-- Investment Recommendations
-- RAG Integration
-- Vector Search
-- Multi-Agent Architecture
-- Real-Time Market Data
-- User Authentication
-
----
-
-# Author
+<h2><a class="anchor" id="author"> 👤 Author</a><h2/>
 
 **Purva Nijai**
 
